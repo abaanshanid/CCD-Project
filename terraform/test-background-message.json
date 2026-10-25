@@ -1,0 +1,16 @@
+{
+  "batchId": "test-background-001",
+  "imageId": "background-image-001",
+  "inputKey": "test-batch-001/test.jpg",
+  "outputKey": "test-background-001/test.png",
+  "originalFilename": "test.jpg",
+  "operations": {
+    "resize": null,
+    "rotate": null,
+    "flip": null,
+    "crop": null,
+    "remove_background": true,
+    "output_format": "PNG",
+    "quality": 85
+  }
+}

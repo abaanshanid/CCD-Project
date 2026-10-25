@@ -1,0 +1,11 @@
+.venv
+__pycache__
+*.pyc
+
+input
+output
+uploads
+api_output
+
+.git
+.env
