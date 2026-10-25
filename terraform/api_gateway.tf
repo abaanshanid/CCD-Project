@@ -46,7 +46,8 @@ resource "aws_apigatewayv2_api" "cloud_api" {
   cors_configuration {
     allow_origins = [
       "http://localhost:3000",
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://ccd-project-ueyd.onrender.com"
     ]
 
     allow_methods = [
@@ -73,6 +74,30 @@ resource "aws_apigatewayv2_integration" "cloud_api" {
   integration_method     = "POST"
   payload_format_version = "2.0"
   timeout_milliseconds   = 30000
+}
+
+# The FastAPI image currently rejects browser preflights from newly added
+# origins. Route OPTIONS separately so API Gateway can return its configured
+# CORS headers without changing normal API response status codes.
+resource "aws_apigatewayv2_integration" "cloud_api_preflight" {
+  api_id                 = aws_apigatewayv2_api.cloud_api.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.cloud_api.invoke_arn
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+
+  response_parameters {
+    status_code = 400
+    mappings = {
+      "overwrite:statuscode" = "204"
+    }
+  }
+}
+
+resource "aws_apigatewayv2_route" "cloud_api_preflight" {
+  api_id    = aws_apigatewayv2_api.cloud_api.id
+  route_key = "OPTIONS /{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.cloud_api_preflight.id}"
 }
 
 

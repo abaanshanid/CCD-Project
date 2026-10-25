@@ -11,7 +11,8 @@ resource "aws_s3_bucket_cors_configuration" "original_images" {
 
     allowed_origins = [
       "http://localhost:3000",
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://ccd-project-ueyd.onrender.com"
     ]
 
     expose_headers = [
@@ -36,7 +37,8 @@ resource "aws_s3_bucket_cors_configuration" "processed_images" {
 
     allowed_origins = [
       "http://localhost:3000",
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://ccd-project-ueyd.onrender.com"
     ]
 
     expose_headers = [
